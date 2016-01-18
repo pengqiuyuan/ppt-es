@@ -1,0 +1,565 @@
+<!doctype html>
+
+<!--
+
+    Welcome to the light side of the source, young padawan.
+
+    One step closer to learn something interesting you are...
+
+                               ____                  
+                            _.' :  `._               
+                        .-.'`.  ;   .'`.-.           
+               __      / : ___\ ;  /___ ; \      __  
+             ,'_ ""=-.:__;".-.";: :".-.":__;.-="" _`,
+             :' `.t""=-.. '<@.`;_  ',@:` ..-=""j.' `;
+                  `:-.._J '-.-'L__ `-.-' L_..-;'     
+                    "-.__ ;  .-"  "-.  : __.-"       
+                        L ' /.======.\ ' J           
+                         "-.   "__"   .-"            
+                        __.l"-:_JL_;-";.__           
+                     .-j/'.;  ;""""  / .'\"-.        
+                   .' /:`. "-.:     .-" .';  `.      
+                .-"  / ;  "-. "-..-" .-"  :    "-.   
+             .+"-.  : :      "-.__.-"      ;-._   \  
+             ; \  `.; ;                    : : "+. ; 
+             :  ;   ; ;                    : ;  : \: 
+             ;  :   ; :                    ;:   ;  : 
+            : \  ;  :  ;                  : ;  /  :: 
+            ;  ; :   ; :                  ;   :   ;: 
+            :  :  ;  :  ;                : :  ;  : ; 
+            ;\    :   ; :                ; ;     ; ; 
+            : `."-;   :  ;              :  ;    /  ; 
+             ;    -:   ; :              ;  : .-"   : 
+             :\     \  :  ;            : \.-"      : 
+              ;`.    \  ; :            ;.'_..-=  / ; 
+              :  "-.  "-:  ;          :/."      .'  :
+               \         \ :          ;/  __        :
+                \       .-`.\        /t-""  ":-+.   :
+                 `.  .-"    `l    __/ /`. :  ; ; \  ;
+                   \   .-" .-"-.-"  .' .'j \  /   ;/ 
+                    \ / .-"   /.     .'.' ;_:'    ;  
+                     :-""-.`./-.'     /    `.___.'   
+                           \ `t  ._  /               
+                            "-.t-._:'                
+
+-->
+
+<!--
+    
+    So you'd like to know how to use impress.js?
+    
+    You've made the first, very important step - you're reading the source code.
+    And that's how impress.js presentations are built - with HTML and CSS code.
+    
+    Believe me, you need quite decent HTML and CSS skills to be able to use impress.js effectively.
+    And what is even more important, you need to be a designer, too, because there are no default
+    styles for impress.js presentations, there is no default or automatic layout for them.
+    
+    You need to design and build it by hand.
+    
+    So...
+    
+    Would you still like to know how to use impress.js?
+    
+-->
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1024" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>impress.js | presentation tool based on the power of CSS3 transforms and transitions in modern browsers | by Bartek Szopka @bartaz</title>
+    
+    <meta name="description" content="impress.js is a presentation tool based on the power of CSS3 transforms and transitions in modern browsers and inspired by the idea behind prezi.com." />
+    <meta name="author" content="Bartek Szopka" />
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />
+
+    <!--
+        
+        Impress.js doesn't depend on any external stylesheet. Script adds all styles it needs for
+        presentation to work.
+        
+        This style below contains styles only for demo presentation. Browse it to see how impress.js
+        classes are used to style presentation steps, or how to apply fallback styles, but I don't want
+        you to use them directly in your presentation.
+        
+        Be creative, build your own. We don't really want all impress.js presentations to look the same,
+        do we?
+        
+        When creating your own presentation get rid of this file. Start from scratch, it's fun!
+        
+    -->
+    <link href="css/impress-demo.css" rel="stylesheet" />
+    
+    <link rel="shortcut icon" href="favicon.png" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <style type="text/css">
+        .step {
+            width: 1700px;
+        }
+    </style>
+</head>
+
+<!--
+    
+    Body element is used by impress.js to set some useful class names, that will allow you to detect
+    the support and state of the presentation in CSS or other scripts.
+    
+    First very useful class name is `impress-not-supported`. This class means, that browser doesn't
+    support features required by impress.js, so you should apply some fallback styles in your CSS.
+    It's not necessary to add it manually on this element. If the script detects that browser is not
+    good enough it will add this class, but keeping it in HTML means that users without JavaScript
+    will also get fallback styles.
+    
+    When impress.js script detects that browser supports all required features, this class name will
+    be removed.
+    
+    The class name on body element also depends on currently active presentation step. More details about
+    it can be found later, when `hint` element is being described.
+    
+-->
+<body class="impress-not-supported">
+
+<!--
+    For example this fallback message is only visible when there is `impress-not-supported` class on body.
+-->
+<div class="fallback-message">
+    <p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified version of this presentation.</p>
+    <p>For the best experience please use the latest <b>Chrome</b>, <b>Safari</b> or <b>Firefox</b> browser.</p>
+</div>
+
+<!--
+    
+    Now that's the core element used by impress.js.
+    
+    That's the wrapper for your presentation steps. In this element all the impress.js magic happens.
+    It doesn't have to be a `<div>`. Only `id` is important here as that's how the script find it.
+    
+    You probably won't need it now, but there are some configuration options that can be set on this element.
+    
+    To change the duration of the transition between slides use `data-transition-duration="2000"` giving it
+    a number of ms. It defaults to 1000 (1s).
+    
+    You can also control the perspective with `data-perspective="500"` giving it a number of pixels.
+    It defaults to 1000. You can set it to 0 if you don't want any 3D effects.
+    If you are willing to change this value make sure you understand how CSS perspective works:
+    https://developer.mozilla.org/en/CSS/perspective
+    
+    But as I said, you won't need it for now, so don't worry - there are some simple but interesing things
+    right around the corner of this tag ;)
+    
+-->
+<div id="impress">
+
+    <!--
+        
+        Here is where interesting thing start to happen.
+        
+        Each step of the presentation should be an element inside the `#impress` with a class name
+        of `step`. These step elements are positioned, rotated and scaled by impress.js, and
+        the 'camera' shows them on each step of the presentation.
+        
+        Positioning information is passed through data attributes.
+        
+        In the example below we only specify x and y position of the step element with `data-x="-1000"`
+        and `data-y="-1500` attributes. This means that **the center** of the element (yes, the center)
+        will be positioned in point x = -1000px and y = -1500px of the presentation 'canvas'.
+        
+        It will not be rotated or scaled.
+        
+    -->
+    <div id="bored" class="step present active"  data-x="-3500" data-y="-3500" data-z="-3500" data-rotate="300" data-scale="1">
+        <q style="font-size: 70%;">基于Elasticsea构建的实时日志平台</q>
+        <p style="font-size: 50%;" class="imagination">@彭秋源 平台开发 2015.12</p>
+    </div>
+
+    <div  class="step present active"  data-x="-1500" data-y="-1500" data-z="-1500" data-rotate="300" data-scale="1">
+        <p style="font-size: 50%;" class="imagination">ftp：</p>
+        <p style="font-size: 50%;" class="imagination">内网项目： http://10.0.29.111:8080/login </p>
+        <p style="font-size: 50%;" class="imagination">用户名：test3 </p>
+        <p style="font-size: 50%;" class="imagination">密码：admin</p>
+    </div>
+
+    <div class="step present active"  data-x="500" data-y="500" data-z="-900" data-rotate="300" data-scale="1">
+        <p style="font-size: 40%;">原始Log：</p>
+        <img  class="slide" style="width: 1105px;height: 308px;" src="./image/1.png">
+    </div>
+
+    <div  class="step present active"  data-x="2500" data-y="2500" data-z="-2500" data-rotate="300" data-scale="1">
+        <img  class="slide" style="width: 1233px;height: 725px;" src="./image/2.jpg">
+    </div>
+
+    <div  class="step present active"  data-x="4500" data-y="4500" data-z="-4500" data-rotate="300" data-scale="1">
+        <img  class="slide" style="width: 1293px;height: 584px;" src="./image/8.png">
+    </div>
+
+    <div  class="step present active"  data-x="6500" data-y="6500" data-z="-6500" data-rotate="300" data-scale="1">
+      <img  class="slide" style="width: 1190px;height: 693px;" src="./image/7.png">
+    </div>
+
+    <div  class="step present active"  data-x="8500" data-y="8500" data-z="-8500" data-rotate="300" data-scale="1">
+          <img  class="slide" style="width: 1096px;height: 649px;" src="./image/6.png">
+    </div>
+
+    <div  class="step present active"  data-x="10500" data-y="10500" data-z="-10500" data-rotate="300" data-scale="1">
+        <img  class="slide" style="width: 1064px;height: 600px;" src="./image/5.png">
+    </div>
+
+    <div  class="step present active"  data-x="12500" data-y="12500" data-z="-12500" data-rotate="300" data-scale="1">
+        <img  class="slide" style="width: 630px;height: 330px;" src="./image/21.png">
+        <p style="font-size: 40%;">最初的技术选型：时间序列数据库</p>
+        <p style="font-size: 40%;">容易优化，非常快，有两个弊端：</p>
+        <p style="font-size: 40%;">1、无法快速响应变化；</p>
+        <p style="font-size: 40%;">2、存储膨胀：按省份聚合，按运营商聚合，按点击人的喜好聚合等；</p>
+        <p style="font-size: 40%;">希望时间序列数据库不仅仅可以提供原始数据的查询，而且要支持对原始数据的聚合能力：</p>
+        <p style="font-size: 40%;">1、入库阶段完成的物化视图；</p>
+        <p style="font-size: 40%;">2、查询阶段完成的实时聚合；</p>
+        <p style="font-size: 40%;">要在在查询阶段做数据的聚合和转换，需要能够支持以下三点：</p>
+        <p style="font-size: 40%;">1、用索引检索出行号：能够从上亿条数据中快速过滤出几百万的数据。</p>
+        <p style="font-size: 40%;">2、从主存储按行号加载：能够快速加载这过滤出的几百万条数据到内存里。</p>
+        <p style="font-size: 40%;">3、分布式计算：能够把这些数据按照GROUP BY 和 SELECT 的要求计算出最终的结果集。</p>
+        <p style="font-size: 40%;">三个不同的技术领域：检索（Lucene）、加载（按列组织的磁盘存储结构）、分布式计算（Hadoop和spark）。elasticsearch</p>
+    </div>
+
+    <div class="step present active"  data-x="14500" data-y="14500" data-z="-14500" data-rotate="300" data-scale="1">
+        <q style="font-size: 40%;">Elasticsearch</q>
+        <p style="font-size: 40%;">1、Lucene的inverted index可以比mysql的b-tree检索更快。</p>
+        <p style="font-size: 40%;">2、在 Mysql中给两个字段独立建立的索引无法联合起来使用，必须对联合查询的场景建立复合索引。而lucene可以任何AND或者OR组合使用索引进行检索。</p>
+        <p style="font-size: 40%;">3、Mysql 如果经过索引过滤之后仍然要加载很多行的话，出于效率考虑经常会选择进行全表扫描。</p>
+        <p style="font-size: 40%;">4、Lucene 从 4.0 开始支持 DocValues，极大降低了内存的占用，减少了磁盘上的尺寸并且提高了加载数据到内存计算的吞吐能力。</p>
+        <p style="font-size: 40%;">5、Lucene支持分segment，Elasticsearch支持分index。Elasticsearch可以把分开的数据当成一张表来查询和聚合。相比之下Mysql如果自己做分库分表的时候，联合查询不方便。</p>
+        <p style="font-size: 40%;">6、Elasticsearch 从1.0开始支持aggregation，基本上有了普通SQL的聚合能力强大的多。</p>
+        <q style="font-size: 40%;">问题：</q>
+        <p style="font-size: 40%;">1、Elasticsearch简介？</p>
+        <p style="font-size: 40%;">2、Log数据是如何（收集、处理、转发、解析）的？</p>
+        <p style="font-size: 40%;">3、Elasticsearch是基于什么原理如何做到比mysql更快地查询和聚合时间序列数据的？</p>
+        <p style="font-size: 40%;">4、Elasticsearch是如何在我们游戏项目中使用的？</p>
+        <p style="font-size: 40%;">5、坑&优化</p>
+
+    </div>
+
+    <div class="step present active"  data-x="16500" data-y="16500" data-z="-16500" data-rotate="300" data-scale="1">
+        <img  class="slide" style="width: 1000px;height: 430px;" src="./image/20.png">
+        <q style="font-size: 40%;">Elasticsearch 是一个分布式可扩展的实时搜索和分析引擎.</q>
+        <p style="font-size: 40%;">Elasticsearch 是一个建立在全文搜索引擎 Apache Lucene(TM) 基础上的搜索引擎. 当然 Elasticsearch 并不仅仅是 Lucene 那么简单，它不仅包括了全文搜索功能，还可以进行以下工作:</p>
+        <p style="font-size: 40%;">1、分布式实时文件存储，并将每一个字段都编入索引，使其可以被搜索。</p>
+        <p style="font-size: 40%;">2、实时分析的分布式搜索引擎。</p>
+        <p style="font-size: 40%;">3、可以扩展到上百台服务器，处理PB级别的结构化或非结构化数据。</p>
+    </div>
+
+    <div  class="step present active"  data-x="18500" data-y="18500" data-z="-18500" data-rotate="300" data-scale="1">
+        <q style="font-size: 40%;">Elasticsearch 基础</q>
+        <p style="font-size: 40%;">Elasticsearch的文件存储，是面向文档型数据库，一条数据在这里就是一个文档，用JSON作为文档序列化的格式，比如下面这条用户数据：</p>
+        <img  class="slide" style="width: 468px;height: 176px;" src="./image/29.png">
+        <p style="font-size: 40%;">用Mysql这样的数据库存储就会容易想到建立一张User表，有balabala的字段等，在Elasticsearch里这就是一个文档，当然这个文档会属于一个User的类型，各种各样的类型存在于一个索引当中。这里有一份简易的将Elasticsearch和关系型数据术语对照表:</p>
+        <img  class="slide" style="width: 650px;height: 91px;" src="./image/30.png">
+        <p style="font-size: 40%;">一个 Elasticsearch 集群可以包含多个索引(数据库)，也就是说其中包含了很多类型(表)。这些类型中包含了很多的文档(行)，然后每个文档中又包含了很多的字段(列)。</p>
+        <p style="font-size: 40%;">Elasticsearch的交互，可以使用Java API，也可以直接使用HTTP的Restful API方式，比如我们打算插入一条记录，可以简单发送一个HTTP的请求：</p>
+        <img  class="slide" style="width: 465px;height: 182px;" src="./image/31.png">
+    </div>
+
+    <div  class="step present active"  data-x="20500" data-y="20500" data-z="-20500" data-rotate="300" data-scale="1">
+        <q style="font-size: 40%;">在当前的项目中，我们希望ES能承担亿级文档的搜索、存储，并且十分迅速的搜索响应。</q>
+        <p style="font-size: 40%;">1、节点（Node）：节点是一个ES的实例，一般一台主机上部署一个节点</p>
+        <p style="font-size: 40%;">2、集群（Cluster）：集群由若干节点组成，和任意节点的通信等价于和集群的通信</p>
+        <p style="font-size: 40%;">3、分片（Shard）：一个索引会分成多个分片存储，分片数量在索引建立后不可更改</p>
+        <p style="font-size: 40%;">4、副本（Replica）：副本是分片的一个拷贝，目的在于提高系统的容错性和搜索的效率</p>
+        <p style="font-size: 40%;">5、索引（Index）：类似数据库的库</p>
+        <p style="font-size: 40%;">6、类型（Type）：类似数据库的表</p>
+        <p style="font-size: 40%;">7、文档（Document）：类似数据库的行，包含一个或多个Field</p>
+        <p style="font-size: 40%;">8、字段（Field）：搜索的最小单元，可通过Mapping定义不同的属性（比如可否被搜索）</p>
+    </div>
+
+    <div  class="step present active"  data-x="22500" data-y="22500" data-z="-22500" data-rotate="300" data-scale="1">
+        <img  class="slide" style="width: 1320px;height: 656px;" src="./image/14.png">
+    </div>
+
+    <div  class="step present active"  data-x="24500" data-y="24500" data-z="-24500" data-rotate="300" data-scale="1">
+        <img  class="slide" style="width: 1450px;height: 772px;" src="./image/12.png">
+    </div>
+
+    <div  class="step present active"  data-x="26500" data-y="26500" data-z="-26500" data-rotate="300" data-scale="1">
+        <img  class="slide" style="width: 885px;height: 559px;" src="./image/10.png">
+    </div>
+
+    <div  class="step present active"  data-x="28500" data-y="28500" data-z="-28500" data-rotate="300" data-scale="1">
+        <img  class="slide" style="width: 801px;height: 469px;" src="./image/11.png">
+        <p style="font-size: 40%;">github：https://github.com/medcl/elasticsearch-rtf</p>
+    </div>
+
+    <div  class="step present active"  data-x="30500" data-y="30500" data-z="-30500" data-rotate="300" data-scale="1">
+        <img  class="slide" style="width: 581px;height: 654px;" src="./image/15.png">
+        <p  style="font-size: 40%;">select * from tweet where user = 'kimchy';</p>
+    </div>
+
+    <div  class="step present active"  data-x="32500" data-y="32500" data-z="-32500" data-rotate="300" data-scale="1">
+        <p style="font-size: 40%;">什么是logstash</p>
+        <p style="font-size: 40%;">1、收集、处理、转发、解析</p>
+        <p style="font-size: 40%;">logstash解决的问题</p>
+        <p style="font-size: 40%;">1、结构化日志内容</p>
+        <p style="font-size: 40%;">2、标准化日志时间</p>
+    </div>
+
+    <div  class="step present active"  data-x="34500" data-y="34500" data-z="-34500" data-rotate="300" data-scale="1">
+        <p style="font-size: 40%;">logstash基本概念</p>
+        <p style="font-size: 40%;">Input</p>
+        <p style="font-size: 40%;">1、处理日志源，生产日志event</p>
+        <p style="font-size: 40%;">2、一条event日志，包含多个字段</p>
+        <p style="font-size: 40%;">Codes</p>
+        <p style="font-size: 40%;">1、识别不同的日志格式：json、csv等等</p>
+        <p style="font-size: 40%;">2、标准化日志时间</p>
+        <p style="font-size: 40%;">Filters</p>
+        <p style="font-size: 40%;">1、处理日志</p>
+        <p style="font-size: 40%;">2、抽取、添加、转换、移除field</p>
+        <p style="font-size: 40%;">Outputs</p>
+        <p style="font-size: 40%;">1、输出日志：es、file、email</p>
+    </div>
+
+    <div  class="step present active"  data-x="36500" data-y="36500" data-z="-36500" data-rotate="300" data-scale="1">
+        <p style="font-size: 40%;"> logs => Input ＝> Filters => Outputs =>elasticsearch </p>
+        <img  class="slide" style="width: 1196px;height: 327px;" src="./image/40.png">
+    </div>
+
+    <div  class="step present active"  data-x="38500" data-y="38500" data-z="-38500" data-rotate="300" data-scale="1">
+        <img  class="slide" style="width: 1124px;height: 717px;" src="./image/19.png">
+    </div>
+
+    <div class="step present active"  data-x="40500" data-y="40500" data-z="-40500" data-rotate="300" data-scale="1">
+        <q style="font-size: 40%;">logstash的使用建议</q>
+        <p style="font-size: 40%;">1、Jruby编写不宜调试</p>
+        <p style="font-size: 40%;">2、内置大量的正则计算来识别字段、时间（本质是迭代，正则计算cpu定位高）</p>
+        <p style="font-size: 40%;">3、扩展型强，第三方的插件质量参差不齐</p>
+    </div>
+
+    <div class="step present active"  data-x="42500" data-y="42500" data-z="-42500" data-rotate="300" data-scale="1">
+        <q style="font-size: 40%;">Elasticsearch是基于什么原理如何做到比mysql更快地查询和聚合时间序列数据的？倒排索引和Btree</q>
+        <p style="font-size: 40%;">什么是B-Tree索引?</p>
+        <p style="font-size: 40%;">二叉树查找效率是logN，同时插入新的节点不必移动全部节点，所以用树型结构存储索引，能同时兼顾插入和查询的性能。因此在这个基础上，再结合磁盘的读取特性(顺序读/随机读)，传统关系型数据库采用了B-Tree/B+Tree这样的数据结构：</p>
+        <img  class="slide" style="width: 458px;height: 115px;" src="./image/32.png">
+        <p style="font-size: 40%;">为了提高查询的效率，减少磁盘寻道次数，将多个值作为一个数组通过连续区间存放，一次寻道读取多个数据，同时也降低树的高度。</p>
+    </div>
+
+    <div class="step present active"  data-x="44500" data-y="44500" data-z="-44500" data-rotate="300" data-scale="1">
+        <p style="font-size: 40%;">什么是倒排索引?</p>
+        <img  class="slide" style="width: 384px;height: 84px;" src="./image/33.png">
+        <p style="font-size: 40%;">假设有这么几条数据</p>
+        <img  class="slide" style="width: 1094px;height: 180px;" src="./image/34.png">
+        <p style="font-size: 40%;">Posting List：Elasticsearch分别为每个field都建立了一个倒排索引，Kate, John, 24, Female这些叫term，而[1,2]就是Posting List。Posting list就是一个int的数组，存储了所有符合某个term的文档id。通过posting list这种索引方式似乎可以很快进行查找，比如要找age=24的同学，一下就确定是id为1，2的同学。</p>
+        <p style="font-size: 40%;">Term Dictionary：Elasticsearch为了能快速找到某个term，将所有的term排个序，二分法查找term，logN的查找效率，就像通过字典查找一样，这就是Term Dictionary。现在再看起来，似乎和传统数据库通过B-Tree的方式类似啊，为什么说比B-Tree的查询快呢？</p>
+        <p style="font-size: 40%;">Term Index：B-Tree通过减少磁盘寻道次数来提高查询性能，Elasticsearch也是采用同样的思路，直接通过内存查找term，不读磁盘，但是如果term太多，term dictionary也会很大，放内存不现实，于是有了Term Index，就像字典里的索引页一样，A开头的有哪些term，分别在哪页，可以理解term index是一颗树：</p>
+        <p style="font-size: 40%;">Mysql只有term dictionary这一层，是以b-tree排序的方式存储在磁盘上的。检索一个term需要若干次的random access的磁盘操作。而Lucene在term dictionary的基础上添加了term index来加速检索，term index以树的形式缓存在内存中。从term index查到对应的term dictionary的block位置之后，再去磁盘上找term，大大减少了磁盘的random access次数。</p>
+    </div>
+
+   <div class="step present active"  data-x="46500" data-y="46500" data-z="-46500" data-rotate="300" data-scale="1">
+        <img  class="slide" style="width: 250px;height: 234px;" src="./image/35.png">
+        <p style="font-size: 40%;">这棵树不会包含所有的term，它包含的是term的一些前缀。通过term index可以快速地定位到term dictionary的某个offset，然后从这个位置再往后顺序查找。</p>
+        <img  class="slide" style="width: 574px;height: 315px;" src="./image/36.png">
+        <p style="font-size: 40%;">所以term index不需要存下所有的term，而仅仅是他们的一些前缀与Term Dictionary的block之间的映射关系，再结合FST(Finite State Transducers)的压缩技术，可以使term index缓存到内存中。从term index查到对应的term dictionary的block位置之后，再去磁盘上找term，大大减少了磁盘随机读的次数。</p>
+    </div>
+
+   <div class="step present active"  data-x="48500" data-y="48500" data-z="-48500" data-rotate="300" data-scale="1">
+        <p style="font-size: 40%;">提问：那个FST是神马东东？FSTs are finite-state machines that map a term (byte sequence) to an arbitrary output.</p>
+        <p style="font-size: 40%;">假设我们现在要将mop, moth, pop, star, stop and top(term index里的term前缀)映射到序号：0，1，2，3，4，5(term dictionary的block位置)。最简单的做法就是定义个Map，大家找到自己的位置对应入座就好了，但从内存占用少的角度想想，有没有更优的办法呢？答案就是：FST</p>
+        <img  class="slide" style="width: 568px;height: 257px;" src="./image/37.png">
+        <p style="font-size: 40%;">FST以字节的方式存储所有的term，这种压缩方式可以有效的缩减存储空间，使得term index足以放进内存，但这种方式也会导致查找时需要更多的CPU资源。</p>
+    </div>
+
+    <div class="step present active"  data-x="50500" data-y="50500" data-z="-50500" data-rotate="300" data-scale="1">
+        <q style="font-size: 40%;">压缩技巧1：</q>
+        <p style="font-size: 40%;">用FST压缩term index外，对posting list也有压缩技巧。posting list不是已经只存储文档id了吗？还需要压缩？</p>
+        <p style="font-size: 40%;">Frame Of Reference：增量编码压缩，将大数变小数，按字节存储。Elasticsearch要求posting list是有序的(为了提高搜索的性能，再任性的要求也得满足)，这样做的一个好处是方便压缩，如图：</p>
+        <img  class="slide" style="width: 565px;height: 454px;" src="./image/38.png">
+        <p style="font-size: 40%;">原理就是通过增量，将原来的大数变成小数仅存储增量值，再精打细算按bit排好队，最后通过字节存储，而不是大大咧咧的尽管是2也是用int(4个字节)来存储。</p>
+    </div>    
+
+    <div class="step present active"  data-x="52500" data-y="52500" data-z="-52500" data-rotate="300" data-scale="1">
+        <q style="font-size: 40%;">压缩技巧2：</q>
+        <p style="font-size: 40%;">Roaring bitmaps：Bitmap是一种数据结构，假设有某个posting list：[1,3,4,7,10] 对应的bitmap就是： [1,0,1,1,0,0,1,0,0,1]</p>
+        <p style="font-size: 40%;"> Bitmap的缺点是存储空间随着文档个数线性增长，Roaring bitmaps用到某些指数特性：将posting list按照65535为界限分块</p>
+        <img  class="slide" style="width: 653px;height: 312px;" src="./image/39.png">
+        <p style="font-size: 40%;"> 65535 ： 经典值、2^16-1、2个字节能表示的最大数、一个short的存储单位</p>
+        <p style="font-size: 40%;"> 4096 ：4096*2bytes ＝ 8192bytes 一次磁盘io的最小单位量 </p>
+    </div>   
+
+    <div class="step present active"  data-x="54500" data-y="54500" data-z="-54500" data-rotate="300" data-scale="1">
+        <q style="font-size: 40%;">（数据排序和聚合）Field Data cache 和 Docvalues</q>
+        <img  class="slide" style="width: 600px;height: 405px;" src="./image/28.png">
+        <p style="font-size: 40%;">右边是倒排索引，第一列示某一列的所有的不同值，第三列示含有这个词的文档id列表。排序和aggregation计算的时候，无法直接食用倒排表计算，需要将其反转一下，编程左边的是按照文档序的列示格式。并且右边的倒排表里的term都是string类型，因此还有一个类型的转换。field data cache缓存的就是左边这种数据结构，对于大的索引，这个计算过程很耗时间。如果使用docvalues，则不需要再查询时按需构造这个数据结构，而是在索引时就在磁盘上构造好的，计算时直接从磁盘上读取这种列示数据结构。</p>
+        <p style="font-size: 40%;">如果设置了doc values，左边的列式存储结构是在indexing time就已经构造好的。 搜索和排序的时候不用按需去生成，直接可以使用。</p>
+    </div>
+
+    <div class="step present active"  data-x="56500" data-y="56500" data-z="-56500" data-rotate="300" data-scale="1">
+        <q style="font-size: 40%;">如何利用 ES 计算用户留存率：pipeline aggregation</q>
+        <p style="font-size: 40%;">目前我想到的比较容易达成的做法，是我们在记录用户登录操作日志的时候，把该用户的注册时间也同期输出。首先，创建mapping</p>
+        <img  class="slide" style="width: 700px;height: 300px;" src="./image/22.png">
+        <p style="font-size: 40%;">那么实际记录的日志会类似这样：表示 uid 为 1 的用户，23 号注册并登录，24 号再次登录；uid 为 2 的用户，23 号注册并登录，24 号无登录</p>
+        <img  class="slide" style="width: 700px;height: 220px;" src="./image/23.png">
+    </div>
+    <div class="step present active"  data-x="58500" data-y="58500" data-z="-58500" data-rotate="300" data-scale="1">
+        <q style="font-size: 40%;">如何利用 ES 计算用户留存率：pipeline aggregation</q>
+        <p style="font-size: 40%;">目前我想到的比较容易达成的做法，是我们在记录用户登录操作日志的时候，把该用户的注册时间也同期输出。首先，创建mapping</p>
+        <img  class="slide" style="width: 700px;height: 300px;" src="./image/22.png">
+        <p style="font-size: 40%;">那么实际记录的日志会类似这样：表示 uid 为 1 的用户，23 号注册并登录，24 号再次登录；uid 为 2 的用户，23 号注册并登录，24 号无登录</p>
+        <img  class="slide" style="width: 700px;height: 220px;" src="./image/23.png">
+    </div>
+
+    <div class="step present active"  data-x="60500" data-y="60500" data-z="-60500" data-rotate="300" data-scale="1">
+        <q style="font-size: 40%;">使用pipeline aggregation 计算用户留存：</q>
+        <img  class="slide" style="width: 687px;height: 1190px;" src="./image/24.png">
+    </div>
+
+    <div class="step present active"  data-x="62500" data-y="62500" data-z="-62500" data-rotate="300" data-scale="1">
+        <q style="font-size: 40%;">留存结果：</q>
+        <img  class="slide" style="width: 687px;height: 687px;" src="./image/25.png">
+    </div>
+
+    <div class="step present active"  data-x="64500" data-y="64500" data-z="-64500" data-rotate="300" data-scale="1">
+        <q style="font-size: 40%;">总结：Elasticsearch的索引思路</q>
+        <p style="font-size: 40%;">将磁盘里的东西尽量搬进内存，减少磁盘随机读取次数(同时也利用磁盘顺序读特性)，结合各种奇技淫巧的压缩算法，用及其苛刻的态度使用内存。所以，对于使用Elasticsearch进行索引时需要注意:</p>
+        <p style="font-size: 40%;">不需要索引的字段，一定要明确定义出来，因为默认是自动建索引的</p>
+        <p style="font-size: 40%;">同样的道理，对于String类型的字段，不需要analysis的也需要明确定义出来，因为默认也是会analysis的</p>
+        <p style="font-size: 40%;">坑&优化</p>
+        <p style="font-size: 40%;">该给ES分配多少内存？JVM参数如何优化?为何我的Heap占用这么高？为何经常有某个field的数据量超出内存限制的异常？为何感觉上没多少数据，也会经常Out Of Memory？</p>
+    </div>  
+
+
+    <!--
+        
+        This is an example of step element being scaled.
+        
+        Again, we use a `data-` attribute, this time it's `data-scale="4"`, so it means that this
+        element will be 4 times larger than the others.
+        From presentation and transitions point of view it means, that it will have to be scaled
+        down (4 times) to make it back to it's correct size.
+        
+    -->
+    <div id="title" class="step" data-x="0" data-y="0" data-scale="4">
+        <h1>thanks</h1>
+    </div>
+
+
+</div>
+
+<!--
+    
+    Hint is not related to impress.js in any way.
+    
+    But it can show you how to use impress.js features in creative way.
+    
+    When the presentation step is shown (selected) its element gets the class of "active" and the body element
+    gets the class based on active step id `impress-on-ID` (where ID is the step's id)... It may not be
+    so clear because of all these "ids" in previous sentence, so for example when the first step (the one with
+    the id of `bored`) is active, body element gets a class of `impress-on-bored`.
+    
+    This class is used by this hint below. Check CSS file to see how it's shown with delayed CSS animation when
+    the first step of presentation is visible for a couple of seconds.
+    
+    ...
+    
+    And when it comes to this piece of JavaScript below ... kids, don't do this at home ;)
+    It's just a quick and dirty workaround to get different hint text for touch devices.
+    In a real world it should be at least placed in separate JS file ... and the touch content should be
+    probably just hidden somewhere in HTML - not hard-coded in the script.
+    
+    Just sayin' ;)
+    
+-->
+
+<script>
+if ("ontouchstart" in document.documentElement) { 
+    document.querySelector(".hint").innerHTML = "<p>Tap on the left or right to navigate</p>";
+}
+</script>
+
+<!--
+    
+    Last, but not least.
+    
+    To make all described above really work, you need to include impress.js in the page.
+    I strongly encourage to minify it first.
+    
+    In here I just include full source of the script to make it more readable.
+    
+    You also need to call a `impress().init()` function to initialize impress.js presentation.
+    And you should do it in the end of your document. Not only because it's a good practice, but also
+    because it should be done when the whole document is ready.
+    Of course you can wrap it in any kind of "DOM ready" event, but I was too lazy to do so ;)
+    
+-->
+<script src="js/impress.js"></script>
+<script>impress().init();</script>
+
+<!--
+    
+    The `impress()` function also gives you access to the API that controls the presentation.
+    
+    Just store the result of the call:
+    
+        var api = impress();
+    
+    and you will get three functions you can call:
+    
+        `api.init()` - initializes the presentation,
+        `api.next()` - moves to next step of the presentation,
+        `api.prev()` - moves to previous step of the presentation,
+        `api.goto( idx | id | element, [duration] )` - moves the presentation to the step given by its index number
+                id or the DOM element; second parameter can be used to define duration of the transition in ms,
+                but it's optional - if not provided default transition duration for the presentation will be used.
+    
+    You can also simply call `impress()` again to get the API, so `impress().next()` is also allowed.
+    Don't worry, it wont initialize the presentation again.
+    
+    For some example uses of this API check the last part of the source of impress.js where the API
+    is used in event handlers.
+    
+-->
+
+</body>
+</html>
+
+<!--
+    
+    Now you know more or less everything you need to build your first impress.js presentation, but before
+    you start...
+    
+    Oh, you've already cloned the code from GitHub?
+    
+    You have it open in text editor?
+    
+    Stop right there!
+    
+    That's not how you create awesome presentations. This is only a code. Implementation of the idea that
+    first needs to grow in your mind.
+    
+    So if you want to build great presentation take a pencil and piece of paper. And turn off the computer.
+    
+    Sketch, draw and write. Brainstorm your ideas on a paper. Try to build a mind-map of what you'd like
+    to present. It will get you closer and closer to the layout you'll build later with impress.js.
+    
+    Get back to the code only when you have your presentation ready on a paper. It doesn't make sense to do
+    it earlier, because you'll only waste your time fighting with positioning of useless points.
+    
+    If you think I'm crazy, please put your hands on a book called "Presentation Zen". It's all about 
+    creating awesome and engaging presentations.
+    
+    Think about it. 'Cause impress.js may not help you, if you have nothing interesting to say.
+    
+-->
+
+<!--
+    
+    Are you still reading this?
+    
+    For real?
+    
+    I'm impressed! Feel free to let me know that you got that far (I'm @bartaz on Twitter), 'cause I'd like
+    to congratulate you personally :)
+    
+    But you don't have to do it now. Take my advice and take some time off. Make yourself a cup of coffee, tea,
+    or anything you like to drink. And raise a glass for me ;)
+    
+    Cheers!
+    
+-->
+
